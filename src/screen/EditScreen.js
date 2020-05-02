@@ -1,12 +1,19 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet } from 'react-native';
+import { Context } from '../context/BlogContext';
+import BlogPostForm from '../components/BlogPostForm';
 
 const EditScreen = ({ navigation }) => {
-    return (
-        <View>
-            <Text>Edit Screen - {navigation.getParam('id')}</Text>
-        </View>
-    );
+    const { state, editBlogPost } = useContext(Context);
+
+    id = navigation.getParam('id');
+
+    const blogPost = state.find( (blogPost) => blogPost.id === id );
+
+    return <BlogPostForm initialValues={ { title: blogPost.title, content: blogPost.content } } 
+        onSubmit={(title, content) => {
+            editBlogPost(title, content, id, () => { navigation.pop() } );
+    } }/>
 };
 
 const styles= StyleSheet.create({});
